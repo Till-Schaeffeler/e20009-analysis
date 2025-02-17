@@ -267,7 +267,6 @@ class InterpSolverPhase(PhaseLike):
             xaxis = pid.cut.get_x_axis()
             yaxis = pid.cut.get_y_axis()
 
-######## 
         # Retrieve gain-matching factor
         gm_lf: pl.LazyFrame = pl.scan_csv(self.solver_params.gain_match_factors_path)
         gm_df: pl.DataFrame = gm_lf.filter(
@@ -320,8 +319,6 @@ class InterpSolverPhase(PhaseLike):
         w_tb: float = dv_df.get_column("average_window_tb")[0]
         mm_err: float = dv_df.get_column("average_micromegas_tb_error")[0]
         w_err: float = dv_df.get_column("average_window_tb_error")[0]
-
-######### END ################
 
         # mm_tb: float = 62
         # w_tb: float = 396
@@ -432,7 +429,7 @@ class InterpSolverPhase(PhaseLike):
             solve_physics_interp(
                 payload.run_number,
                 event,
-                cidx,     
+                cidx,
                 cluster,
                 guess,
                 pid.nucleus,

@@ -267,15 +267,6 @@ class PointcloudLegacyPhase(PhaseLike):
             pc_dataset.attrs["ic_sca_centroid"] = -1.0
             pc_dataset.attrs["ic_sca_multiplicity"] = -1.0
 
-            ## Updated 2/10/2025, attributes need for spyral-v16 #######################################################
-            ############################################################################################################
-
-            # pc_dataset.attrs["orig_run"] = payload.run_number
-            # pc_dataset.attrs["orig_event"] = idx
-
-            ############################################################################################################
-            ############################################################################################################
-
             # Set IC if present; take first non-garbage peak
             if event.ic_trace is not None:
                 # No way to disentangle multiplicity
