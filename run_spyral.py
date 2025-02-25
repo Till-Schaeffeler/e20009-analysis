@@ -23,8 +23,8 @@ import multiprocessing
 
 #########################################################################################################
 # Set up workspace and trace paths
-workspace_path = Path("E:\\newest\\elastic\\workspace")
-trace_path = Path("E:\\newest\\elastic\\workspace\\PointcloudLegacy")
+workspace_path = Path("c:\\Users\\schaeffe\\Desktop\\e20009_continuity_joining-output")
+trace_path = Path("e:\\e20009\\traces") 
 
 # Make directory to store beam events
 if not workspace_path.exists():
@@ -33,24 +33,24 @@ beam_events_folder = workspace_path / "beam_events"
 if not beam_events_folder.exists():
     beam_events_folder.mkdir()
 
-run_min = 0
-run_max = 57
-n_processes = 10
+run_min = 108
+run_max = 108
+n_processes = 1
 
 #########################################################################################################
 # Define configuration
 pad_params = PadParameters(
     pad_geometry_path=Path(
-        "C:\\Users\\zachs\\Desktop\\e20009_analysis\\e20009_analysis\\e20009_parameters\\pad_geometry_legacy.csv"
+        "C:\\Users\\schaeffe\\Desktop\\e20009-analysis\\e20009_parameters\\pad_geometry_legacy.csv"
     ),
     pad_time_path=Path(
-        "C:\\Users\\zachs\\Desktop\\e20009_analysis\\e20009_analysis\\e20009_parameters\\pad_time_correction.csv"
+        "C:\\Users\\schaeffe\\Desktop\\e20009-analysis\\e20009_parameters\\pad_time_correction.csv"
     ),
     pad_electronics_path=Path(
-        "C:\\Users\\zachs\\Desktop\\e20009_analysis\\e20009_analysis\\e20009_parameters\\pad_electronics_legacy.csv"
+        "C:\\Users\\schaeffe\\Desktop\\e20009-analysis\\e20009_parameters\\pad_electronics_legacy.csv"
     ),
     pad_scale_path=Path(
-        "C:\\Users\\zachs\\Desktop\\e20009_analysis\\e20009_analysis\\e20009_parameters\\pad_scale.csv"
+        "C:\\Users\\schaeffe\\Desktop\\e20009-analysis\\e20009_parameters\\pad_scale.csv"
     ),
 )
 
@@ -78,7 +78,7 @@ det_params = DetectorParameters(
     detector_length=1000.0,
     beam_region_radius=20.0,
     drift_velocity_path=Path(
-        "C:\\Users\\zachs\\Desktop\\e20009_analysis\\e20009_analysis\\e20009_parameters\\drift_velocity.csv"
+        "C:\\Users\\schaeffe\\Desktop\\e20009-analysis\\e20009_parameters\\drift_velocity.csv"
     ),
     get_frequency=3.125,
     garfield_file_path=Path(
@@ -102,7 +102,27 @@ estimate_params = EstimateParameters(
     min_total_trajectory_points=20, smoothing_factor=100.0
 )
 
-# # Protons
+# Protons
+solver_params = SolverParameters(
+    gas_data_path=Path(
+        "C:\\Users\\schaeffe\\Desktop\\e20009-analysis\\e20009_parameters\\e20009_target.json"
+    ),
+    gain_match_factors_path=Path(
+        "C:\\Users\\schaeffe\\Desktop\\e20009-analysis\\e20009_parameters\\gain_match_factors.csv"
+    ),
+    particle_id_filename=Path("C:\\Users\\schaeffe\\Desktop\\Spyral-16-output\\proton_gate.json"),
+    ic_min_val=300.0,
+    ic_max_val=850.0,
+    n_time_steps=1300,
+    interp_ke_min=0.01,
+    interp_ke_max=40.0,
+    interp_ke_bins=800,
+    interp_polar_min=0.1,
+    interp_polar_max=179.9,
+    interp_polar_bins=500,
+)
+
+# Deuterons
 # solver_params = SolverParameters(
 #     gas_data_path=Path(
 #         "C:\\Users\\zachs\\Desktop\\e20009_analysis\\e20009_analysis\\e20009_parameters\\e20009_target.json"
@@ -110,37 +130,17 @@ estimate_params = EstimateParameters(
 #     gain_match_factors_path=Path(
 #         "C:\\Users\\zachs\\Desktop\\e20009_analysis\\e20009_analysis\\e20009_parameters\\gain_match_factors.csv"
 #     ),
-#     particle_id_filename=Path("E:\\newest\\proton_id.json"),
+#     particle_id_filename=Path("E:\\newest\\deuteron_id.json"),
 #     ic_min_val=300.0,
 #     ic_max_val=850.0,
 #     n_time_steps=1300,
 #     interp_ke_min=0.01,
-#     interp_ke_max=40.0,
-#     interp_ke_bins=800,
+#     interp_ke_max=80.0,
+#     interp_ke_bins=1600,
 #     interp_polar_min=0.1,
-#     interp_polar_max=179.9,
-#     interp_polar_bins=500,
+#     interp_polar_max=89.9,
+#     interp_polar_bins=250,
 # )
-
-# Deuterons
-solver_params = SolverParameters(
-    gas_data_path=Path(
-        "C:\\Users\\zachs\\Desktop\\e20009_analysis\\e20009_analysis\\e20009_parameters\\e20009_target.json"
-    ),
-    gain_match_factors_path=Path(
-        "C:\\Users\\zachs\\Desktop\\e20009_analysis\\e20009_analysis\\e20009_parameters\\gain_match_factors.csv"
-    ),
-    particle_id_filename=Path("E:\\newest\\deuteron_id.json"),
-    ic_min_val=300.0,
-    ic_max_val=850.0,
-    n_time_steps=1300,
-    interp_ke_min=0.01,
-    interp_ke_max=80.0,
-    interp_ke_bins=1600,
-    interp_polar_min=0.1,
-    interp_polar_max=89.9,
-    interp_polar_bins=250,
-)
 
 #########################################################################################################
 # Construct pipeline
@@ -159,7 +159,7 @@ pipe = Pipeline(
         EstimationPhase(estimate_params, det_params),
         InterpSolverPhase(solver_params, det_params),
      ],
-    [False, False, False, True],
+    [False, False, True, False],
     workspace_path,
     trace_path,
 )
