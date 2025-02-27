@@ -33,34 +33,7 @@ target = GasTarget(
 )
 
 # Number of events to simulate
-nevents = 3000000
-
-# Deuteron break up pipeline
-# At least 2.22 MeV is needed to break up the deuteron.
-# Remember, the min and max angles here are the cm angles for the proton
-# and we plot angular distributions wrt to the heavy residue, so subtract 180
-# pipeline = KinematicsPipeline(
-#     [
-#         Reaction(
-#             target=nuclear_map.get_data(1, 2),
-#             projectile=nuclear_map.get_data(4, 10),
-#             ejectile=nuclear_map.get_data(4, 10),
-#         ),
-#         Decay(parent=nuclear_map.get_data(1, 2), residual_1=nuclear_map.get_data(1, 1)),
-#     ],
-#     [
-#         ExcitationUniform(2.2, 15.66),
-#         ExcitationGaussian(0.0),
-#     ],
-#     [
-#         PolarUniform(angle_min=0, angle_max=np.pi),
-#         PolarUniform(angle_min=(2 * np.pi / 3), angle_max=np.pi),
-#     ],
-#     beam_energy=93.5,  # MeV
-#     target_material=KinematicsTargetMaterial(
-#         material=target, z_range=(0.0, 1.0), rho_sigma=0.02 / 3
-#     ),
-# )
+nevents = 1000
 
 # 10Be(d,d) pipeline
 pipeline = KinematicsPipeline(
